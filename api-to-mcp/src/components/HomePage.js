@@ -1,7 +1,7 @@
 import React from 'react';
 import './HomePage.css';
 
-const HomePage = () => {
+const HomePage = ({ onNavigateToLogin }) => {
   return (
     <div className="homepage">
       {/* Navigation */}
@@ -14,7 +14,7 @@ const HomePage = () => {
             <a href="#features" className="nav-link">Features</a>
             <a href="#how-it-works" className="nav-link">How it Works</a>
             <a href="#pricing" className="nav-link">Pricing</a>
-            <button className="nav-button">Get Started</button>
+            <button className="nav-button" onClick={onNavigateToLogin}>Get Started</button>
           </div>
         </div>
       </nav>
@@ -32,7 +32,7 @@ const HomePage = () => {
               enabling AI assistants to interact with your APIs through intelligent tool calling.
             </p>
             <div className="hero-buttons">
-              <button className="btn-primary">Start Converting</button>
+              <button className="btn-primary" onClick={onNavigateToLogin}>Start Converting</button>
               <button className="btn-secondary">View Demo</button>
             </div>
           </div>
@@ -154,7 +154,7 @@ const HomePage = () => {
           <div className="cta-content">
             <h2>Ready to Transform Your APIs?</h2>
             <p>Join thousands of developers who are already using API to MCP to make their APIs AI-ready.</p>
-            <button className="btn-primary large">Get Started Free</button>
+            <button className="btn-primary large" onClick={onNavigateToLogin}>Get Started Free</button>
           </div>
         </div>
       </section>
