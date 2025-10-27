@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import HomePage from './components/HomePage';
 import { Login, Signup, SuccessScreen } from './components/Auth';
 import Dashboard from './components/Dashboard';
+import Docs from './components/Docs';
 import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
   const [authStep, setAuthStep] = useState('login'); // 'login', 'signup', 'success'
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home'); // 'home', 'login', 'dashboard'
+  const [currentPage, setCurrentPage] = useState('home'); // 'home', 'login', 'dashboard', 'docs'
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -45,10 +46,16 @@ function App() {
     setCurrentPage('home');
   };
 
+  const navigateToDocs = () => {
+    setCurrentPage('docs');
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <HomePage onNavigateToLogin={navigateToLogin} />;
+        return <HomePage onNavigateToLogin={navigateToLogin} onNavigateToDocs={navigateToDocs} />;
+      case 'docs':
+        return <Docs onNavigateHome={navigateToHome} />;
       case 'login':
         if (!isAuthenticated) {
           if (authStep === 'login') {
@@ -68,7 +75,7 @@ function App() {
           <Login onLogin={handleLogin} onSwitchToSignup={switchToSignup} />
         );
       default:
-        return <HomePage onNavigateToLogin={navigateToLogin} />;
+        return <HomePage onNavigateToLogin={navigateToLogin} onNavigateToDocs={navigateToDocs} />;
     }
   };
 
