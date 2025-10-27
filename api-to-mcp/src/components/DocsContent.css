@@ -1,0 +1,143 @@
+.docs-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  font-family: system-ui, sans-serif;
+  color: #222;
+}
+
+.docs-section {
+  margin-bottom: 3rem;
+}
+
+.docs-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.docs-subtitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.docs-subsubtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.docs-paragraph {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.feature-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fafafa;
+  transition: border-color 0.2s;
+}
+
+.feature-card:hover {
+  border-color: #007bff;
+}
+
+.feature-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Setup Steps */
+.setup-steps {
+  list-style: none;
+  margin-top: 1.5rem;
+  padding-left: 0;
+}
+
+.setup-steps li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.step-number {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: 600;
+  margin-right: 0.75rem;
+}
+
+/* Code Block */
+.code-block {
+  position: relative;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #111;
+}
+
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.copy-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Note Box */
+.note-box {
+  background: #eef7ff;
+  border-left: 4px solid #007bff;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1.5rem;
+}
+
+/* Footer */
+.docs-footer {
+  padding-top: 2rem;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}

@@ -301,6 +301,8 @@
 
 import { useState } from "react"
 import "./Dashboard.css"
+import ApiSpecsTab from "./dashboards/ApiSpecs"
+import Header from "./Header"
 
 // Simple icon components to replace lucide-react
 const BarChart3 = () => <span>📊</span>
@@ -512,26 +514,7 @@ const OverviewTab = () => (
   </div>
 )
 
-const ApiSpecsTab = () => (
-  <div className="api-specs">
-    <div className="section-header">
-      <h2>API Specifications</h2>
-      <button className="btn-primary">Upload New Spec</button>
-    </div>
-    <div className="specs-list">
-      <div className="spec-item">
-        <div className="spec-info">
-          <h3>User Management API</h3>
-          <p>Last updated: 2 days ago</p>
-        </div>
-        <div className="spec-actions">
-          <button className="btn-secondary">View</button>
-          <button className="btn-danger">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-)
+
 
 const ToolsTab = () => (
   <div className="tools-view">

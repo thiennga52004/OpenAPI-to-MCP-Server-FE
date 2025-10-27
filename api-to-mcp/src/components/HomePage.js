@@ -1,14 +1,14 @@
 "use client"
 import "./HomePage.css"
 
-const HomePage = ({ onNavigateToLogin, onNavigateToDocs }) => {
+const HomePage = ({ onNavigateToLogin, onNavigateToDocs, onNavigateToHome }) => {
   return (
     <div className="homepage">
       {/* Navigation */}
       <nav className="navbar">
         <div className="nav-container">
-          <div className="nav-logo">
-            <h2>API to MCP</h2>
+          <div className="nav-logo" >
+            <h2 onClick={onNavigateToHome}>API to MCP</h2>
           </div>
           <div className="nav-menu">
             <a href="#features" className="nav-link">
