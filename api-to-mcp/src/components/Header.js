@@ -1,36 +1,49 @@
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const Header = ( ) => {
-    const navigate = useNavigate();
-    return(
-        <div>
-            {/* Navigation */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="nav-logo" onClick={() => navigate("/")} >
-            <h2 >API to MCP</h2>
-          </div>
-          <div className="nav-menu">
-            <a href="#features" className="nav-link">
-              Features
-            </a>
-            <a href="#how-it-works" className="nav-link">
-              How it Works
-            </a>
-            <a href="#pricing" className="nav-link">
-              Pricing
-            </a>
-            <a href="/docs" className="nav-link">
-              Docs
-            </a>
-            <button className="nav-button" onClick={() => navigate("/login")}>
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
-        </div>
-    )
-}
+const Header = () => {
+  const navigate = useNavigate();
+
+  return (
+    <AppBar  position="static" color="inherit" elevation={0} sx={{height: 80, justifyContent: "center", }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between",color: "667eea" }}>
+
+        {/* Logo sát bên trái */}
+        <Box sx={{ cursor: "pointer", ml: 1 }} onClick={() => navigate("/")}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            API to MCP
+          </Typography>
+        </Box>
+
+        {/* Menu bên phải */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 3, mr: 2 }}>
+          <Typography
+            component="a"
+            href="#pricing"
+            sx={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
+          >
+            Pricing
+          </Typography>
+
+          <Typography
+            component="a"
+            href="/docs"
+            sx={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
+          >
+            Docs
+          </Typography>
+
+          <Button
+            variant="contained"
+            onClick={() => navigate("/login")}
+            sx={{ textTransform: "none", borderRadius: 2 }}
+          >
+            Get Started
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default Header;

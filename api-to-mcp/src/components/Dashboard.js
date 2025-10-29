@@ -1,608 +1,413 @@
-// import React, { useState } from 'react';
-// import './Dashboard.css';
-
-// // Simple icon components to replace lucide-react
-// const BarChart3 = () => <span>📊</span>;
-// const FileText = () => <span>📄</span>;
-// const Wrench = () => <span>🔧</span>;
-// const TrendingUp = () => <span>📈</span>;
-// const Key = () => <span>🔑</span>;
-// const CreditCard = () => <span>💳</span>;
-// const Settings = () => <span>⚙️</span>;
-// const BookOpen = () => <span>📖</span>;
-// const LogOut = () => <span>🚪</span>;
-// const Menu = () => <span>☰</span>;
-// const X = () => <span>✕</span>;
-// const User = () => <span>👤</span>;
-
-// const Sidebar = ({ activeTab, onTabChange, user, onLogout, isCollapsed, onToggle }) => {
-//   const menuItems = [
-//     { id: 'overview', label: 'Overview', icon: BarChart3 },
-//     { id: 'api-specs', label: 'API Specs', icon: FileText },
-//     { id: 'tools', label: 'Tools', icon: Wrench },
-//     { id: 'usage', label: 'Usage', icon: TrendingUp },
-//     { id: 'api-key', label: 'API Key', icon: Key },
-//     { id: 'billing', label: 'Billing', icon: CreditCard },
-//     { id: 'settings', label: 'Settings', icon: Settings },
-//     { id: 'docs', label: 'Docs', icon: BookOpen },
-//   ];
-
-//   return (
-//     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-//       <div className="sidebar-header">
-//         <div className="logo">
-//           <h2>API to MCP</h2>
-//         </div>
-//         <button className="toggle-btn" onClick={onToggle}>
-//           {isCollapsed ? <Menu /> : <X />}
-//         </button>
-//       </div>
-
-//       <nav className="sidebar-nav">
-//         {menuItems.map(item => {
-//           const Icon = item.icon;
-//           return (
-//             <button
-//               key={item.id}
-//               className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-//               onClick={() => onTabChange(item.id)}
-//             >
-//               <Icon className="nav-icon" />
-//               {!isCollapsed && <span className="nav-label">{item.label}</span>}
-//             </button>
-//           );
-//         })}
-//       </nav>
-
-//       <div className="sidebar-footer">
-//         <div className="user-info">
-//           <div className="user-avatar">
-//             <User />
-//           </div>
-//           {!isCollapsed && (
-//             <div className="user-details">
-//               <div className="user-name">{user.name}</div>
-//               <div className="user-plan">{user.plan} Plan</div>
-//             </div>
-//           )}
-//         </div>
-//         <button className="logout-btn" onClick={onLogout}>
-//           <LogOut />
-//           {!isCollapsed && <span>Logout</span>}
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const Dashboard = ({ user, onLogout }) => {
-//   const [activeTab, setActiveTab] = useState('overview');
-//   const [isCollapsed, setIsCollapsed] = useState(false);
-
-//   const handleTabChange = (tab) => {
-//     setActiveTab(tab);
-//   };
-
-//   const handleToggle = () => {
-//     setIsCollapsed(!isCollapsed);
-//   };
-
-//   const renderContent = () => {
-//     switch (activeTab) {
-//       case 'overview':
-//         return <OverviewTab />;
-//       case 'api-specs':
-//         return <ApiSpecsTab />;
-//       case 'tools':
-//         return <ToolsTab />;
-//       case 'usage':
-//         return <UsageTab />;
-//       case 'api-key':
-//         return <ApiKeyTab />;
-//       case 'billing':
-//         return <BillingTab />;
-//       case 'settings':
-//         return <SettingsTab />;
-//       case 'docs':
-//         return <DocsTab />;
-//       default:
-//         return <OverviewTab />;
-//     }
-//   };
-
-//   return (
-//     <div className="dashboard">
-//       <Sidebar
-//         activeTab={activeTab}
-//         onTabChange={handleTabChange}
-//         user={user}
-//         onLogout={onLogout}
-//         isCollapsed={isCollapsed}
-//         onToggle={handleToggle}
-//       />
-//       <main className={`main-content ${isCollapsed ? 'expanded' : ''}`}>
-//         <div className="content-header">
-//           <h1 className="page-title">
-//             {menuItems.find(item => item.id === activeTab)?.label || 'Dashboard'}
-//           </h1>
-//         </div>
-//         <div className="content-body">
-//           {renderContent()}
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// // Placeholder components for each tab
-// const OverviewTab = () => (
-//   <div className="overview-dashboard">
-//     <div className="metrics-grid">
-//       <div className="metric-card">
-//         <div className="metric-icon">📊</div>
-//         <div className="metric-content">
-//           <h3>API Calls</h3>
-//           <div className="metric-value">12,847</div>
-//           <div className="metric-change positive">+12.5%</div>
-//         </div>
-//       </div>
-//       <div className="metric-card">
-//         <div className="metric-icon">🔧</div>
-//         <div className="metric-content">
-//           <h3>Active Tools</h3>
-//           <div className="metric-value">8</div>
-//           <div className="metric-change positive">+2</div>
-//         </div>
-//       </div>
-//       <div className="metric-card">
-//         <div className="metric-icon">✅</div>
-//         <div className="metric-content">
-//           <h3>Success Rate</h3>
-//           <div className="metric-value">98.7%</div>
-//           <div className="metric-change positive">+0.3%</div>
-//         </div>
-//       </div>
-//       <div className="metric-card">
-//         <div className="metric-icon">⚡</div>
-//         <div className="metric-content">
-//           <h3>Avg Response</h3>
-//           <div className="metric-value">245ms</div>
-//           <div className="metric-change negative">-15ms</div>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const ApiSpecsTab = () => (
-//   <div className="api-specs">
-//     <div className="section-header">
-//       <h2>API Specifications</h2>
-//       <button className="btn-primary">Upload New Spec</button>
-//     </div>
-//     <div className="specs-list">
-//       <div className="spec-item">
-//         <div className="spec-info">
-//           <h3>User Management API</h3>
-//           <p>Last updated: 2 days ago</p>
-//         </div>
-//         <div className="spec-actions">
-//           <button className="btn-secondary">View</button>
-//           <button className="btn-danger">Delete</button>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const ToolsTab = () => (
-//   <div className="tools-view">
-//     <h2>Generated Tools</h2>
-//     <div className="tools-grid">
-//       <div className="tool-card">
-//         <h3>get_users</h3>
-//         <p>Retrieve list of users</p>
-//         <div className="tool-status active">Active</div>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const UsageTab = () => (
-//   <div className="usage-analytics">
-//     <h2>Usage Analytics</h2>
-//     <div className="analytics-content">
-//       <div className="chart-placeholder">
-//         <p>📈 Charts will be implemented here</p>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const ApiKeyTab = () => (
-//   <div className="api-key-management">
-//     <h2>API Key Management</h2>
-//     <div className="api-key-display">
-//       <code>ak_live_1234567890abcdef</code>
-//       <button className="btn-secondary">Regenerate</button>
-//     </div>
-//   </div>
-// );
-
-// const BillingTab = () => (
-//   <div className="billing-section">
-//     <h2>Billing & Plans</h2>
-//     <div className="plans-grid">
-//       <div className="plan-card">
-//         <h3>Free Plan</h3>
-//         <div className="plan-price">$0/month</div>
-//         <ul>
-//           <li>1,000 API calls</li>
-//           <li>5 active tools</li>
-//           <li>Basic support</li>
-//         </ul>
-//       </div>
-//       <div className="plan-card featured">
-//         <h3>Pro Plan</h3>
-//         <div className="plan-price">$29/month</div>
-//         <ul>
-//           <li>Unlimited API calls</li>
-//           <li>Unlimited tools</li>
-//           <li>Priority support</li>
-//         </ul>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const SettingsTab = () => (
-//   <div className="settings-page">
-//     <h2>Settings</h2>
-//     <div className="settings-sections">
-//       <div className="setting-group">
-//         <h3>Appearance</h3>
-//         <div className="theme-toggle">
-//           <label>
-//             <input type="checkbox" />
-//             Dark Mode
-//           </label>
-//         </div>
-//       </div>
-//       <div className="setting-group">
-//         <h3>Security</h3>
-//         <button className="btn-secondary">Change Password</button>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// const DocsTab = () => (
-//   <div className="docs-page">
-//     <h2>Documentation</h2>
-//     <div className="docs-content">
-//       <p>Documentation will be uploaded here</p>
-//     </div>
-//   </div>
-// );
-
-// const menuItems = [
-//   { id: 'overview', label: 'Overview' },
-//   { id: 'api-specs', label: 'API Specs' },
-//   { id: 'tools', label: 'Tools' },
-//   { id: 'usage', label: 'Usage' },
-//   { id: 'api-key', label: 'API Key' },
-//   { id: 'billing', label: 'Billing' },
-//   { id: 'settings', label: 'Settings' },
-//   { id: 'docs', label: 'Docs' },
-// ];
-
-// export default Dashboard;
 "use client"
 
 import { useState } from "react"
-import "./Dashboard.css"
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"
+
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Box,
+  Typography,
+  Avatar,
+  Divider,
+  Paper,
+  Grid,
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+} from "@mui/material"
+
+import MenuIcon from "@mui/icons-material/Menu"
+import BarChartIcon from "@mui/icons-material/BarChart"
+import DescriptionIcon from "@mui/icons-material/Description"
+import BuildIcon from "@mui/icons-material/Build"
+import TrendingUpIcon from "@mui/icons-material/TrendingUp"
+import VpnKeyIcon from "@mui/icons-material/VpnKey"
+import CreditCardIcon from "@mui/icons-material/CreditCard"
+import SettingsIcon from "@mui/icons-material/Settings"
+import MenuBookIcon from "@mui/icons-material/MenuBook"
+import LogoutIcon from "@mui/icons-material/Logout"
+
 import ApiSpecsTab from "./dashboards/ApiSpecs"
-import Header from "./Header"
+import DocsPage from "./Docs"
+import { Navigate, useNavigate } from "react-router-dom"
 
-// Simple icon components to replace lucide-react
-const BarChart3 = () => <span>📊</span>
-const FileText = () => <span>📄</span>
-const Wrench = () => <span>🔧</span>
-const TrendingUp = () => <span>📈</span>
-const Key = () => <span>🔑</span>
-const CreditCard = () => <span>💳</span>
-const Settings = () => <span>⚙️</span>
-const BookOpen = () => <span>📖</span>
-const LogOut = () => <span>🚪</span>
-const Menu = () => <span>☰</span>
-const X = () => <span>✕</span>
-const User = () => <span>👤</span>
+const drawerWidth = 240
+const drawerWidthCollapsed = 72
 
-const Sidebar = ({ activeTab, onTabChange, user, onLogout, isCollapsed, onToggle, isMobileOpen, onMobileClose }) => {
-  const [hoveredItem, setHoveredItem] = useState(null)
+const theme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#6366f1", // Modern indigo
+      light: "#818cf8",
+      dark: "#4f46e5",
+    },
+    secondary: {
+      main: "#ec4899", // Modern pink
+    },
+    background: {
+      default: "#f8fafc",
+      paper: "#ffffff",
+    },
+    divider: "#e2e8f0",
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h6: {
+      fontWeight: 600,
+      fontSize: "1.1rem",
+    },
+    subtitle2: {
+      fontWeight: 500,
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#ffffff",
+          color: "#1e293b",
+          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
+          borderBottom: "1px solid #e2e8f0",
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#1e293b",
+          color: "#f1f5f9",
+          borderRight: "1px solid #0f172a",
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "8px",
+          margin: "4px 0",
+          transition: "all 0.2s ease",
+          "&:hover": {
+            backgroundColor: "rgba(99, 102, 241, 0.1)",
+          },
+          "&.Mui-selected": {
+            backgroundColor: "#6366f1",
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "#4f46e5",
+            },
+          },
+        },
+      },
+    },
+  },
+})
 
-  const menuItems = [
-    { id: "overview", label: "Overview", icon: BarChart3 },
-    { id: "api-specs", label: "API Specs", icon: FileText },
-    { id: "tools", label: "Tools", icon: Wrench },
-    { id: "usage", label: "Usage", icon: TrendingUp },
-    { id: "api-key", label: "API Key", icon: Key },
-    { id: "billing", label: "Billing", icon: CreditCard },
-    { id: "settings", label: "Settings", icon: Settings },
-    { id: "docs", label: "Docs", icon: BookOpen },
-  ]
+const SidebarItems = [
+  { id: "overview", label: "Overview", icon: <BarChartIcon /> },
+  { id: "api-specs", label: "API Specs", icon: <DescriptionIcon /> },
+  { id: "tools", label: "Tools", icon: <BuildIcon /> },
+  { id: "usage", label: "Usage", icon: <TrendingUpIcon /> },
+  { id: "api-key", label: "API Key", icon: <VpnKeyIcon /> },
+  { id: "billing", label: "Billing", icon: <CreditCardIcon /> },
+  { id: "settings", label: "Settings", icon: <SettingsIcon /> },
+  { id: "docs", label: "Docs", icon: <MenuBookIcon /> },
+]
 
-  return (
-    <>
-      {isMobileOpen && <div className="sidebar-overlay" onClick={onMobileClose} />}
-      <div className={`sidebar ${isCollapsed ? "collapsed" : ""} ${isMobileOpen ? "mobile-open" : ""}`}>
-        <div className="sidebar-header">
-          <div className="logo">
-            <h2>API to MCP</h2>
-          </div>
-          <button
-            className={`toggle-btn ${isCollapsed ? "rotated" : ""}`}
-            onClick={onToggle}
-            aria-label="Toggle sidebar"
-          >
-            {isCollapsed ? <Menu /> : <X />}
-          </button>
-        </div>
-
-        <nav className="sidebar-nav">
-          {menuItems.map((item) => {
-            const Icon = item.icon
-            return (
-              <button
-                key={item.id}
-                className={`nav-item ${activeTab === item.id ? "active" : ""} ${hoveredItem === item.id ? "hovered" : ""}`}
-                onClick={() => {
-                  onTabChange(item.id)
-                  onMobileClose()
-                }}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
-                aria-current={activeTab === item.id ? "page" : undefined}
-              >
-                <Icon className="nav-icon" />
-                {!isCollapsed && <span className="nav-label">{item.label}</span>}
-              </button>
-            )
-          })}
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-info">
-            <div className="user-avatar">
-              <User />
-            </div>
-            {!isCollapsed && (
-              <div className="user-details">
-                <div className="user-name">{user.name}</div>
-                <div className="user-plan">{user.plan} Plan</div>
-              </div>
-            )}
-          </div>
-          <button className="logout-btn" onClick={onLogout} aria-label="Logout">
-            <LogOut />
-            {!isCollapsed && <span className="logout-text">Logout</span>}
-            {isCollapsed && <span className="logout-label">Logout</span>}
-          </button>
-        </div>
-      </div>
-    </>
-  )
-}
-
-const Dashboard = ({ user, onLogout }) => {
+export default function Dashboard({ user, onLogout }) {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState("overview")
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab)
-  }
-
-  const handleToggle = () => {
-    setIsCollapsed(!isCollapsed)
-  }
-
-  const handleMobileToggle = () => {
-    setIsMobileOpen(!isMobileOpen)
-  }
-
-  const handleMobileClose = () => {
-    setIsMobileOpen(false)
-  }
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed)
 
   const renderContent = () => {
     switch (activeTab) {
-      case "overview":
-        return <OverviewTab />
       case "api-specs":
         return <ApiSpecsTab />
-      case "tools":
-        return <ToolsTab />
-      case "usage":
-        return <UsageTab />
-      case "api-key":
-        return <ApiKeyTab />
-      case "billing":
-        return <BillingTab />
-      case "settings":
-        return <SettingsTab />
-      case "docs":
-        return <DocsTab />
+      case "overview":
+        return (
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+              Overview
+            </Typography>
+            <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
+              Welcome back! Here's your API dashboard.
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                { label: "Total Requests", value: "2.4M", change: "+12%" },
+                { label: "Success Rate", value: "99.8%", change: "+0.2%" },
+                { label: "Avg Response", value: "145ms", change: "-8%" },
+                { label: "Active Keys", value: "12", change: "0" },
+              ].map((stat, i) => (
+                <Grid item xs={12} sm={6} md={3} key={i}>
+                  <Paper
+                    sx={{
+                      p: 2.5,
+                      borderRadius: "12px",
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #e2e8f0",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+                        borderColor: "#cbd5e1",
+                      },
+                    }}
+                  >
+                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 500 }}>
+                      {stat.label}
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mt: 1, mb: 0.5 }}>
+                      {stat.value}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: stat.change.startsWith("+") ? "#10b981" : "#ef4444",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {stat.change} from last month
+                    </Typography>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )
+        case "docs":
+          navigate("/docs")
       default:
-        return <OverviewTab />
+        return <Typography>Hiển thị nội dung tab: {activeTab}</Typography>
     }
   }
 
-  const menuItems = [
-    { id: "overview", label: "Overview" },
-    { id: "api-specs", label: "API Specs" },
-    { id: "tools", label: "Tools" },
-    { id: "usage", label: "Usage" },
-    { id: "api-key", label: "API Key" },
-    { id: "billing", label: "Billing" },
-    { id: "settings", label: "Settings" },
-    { id: "docs", label: "Docs" },
-  ]
+  const drawer = (
+    <Box display="flex" flexDirection="column" height="100%">
+      {/* Header + Collapse Button */}
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        px={2}
+        py={2}
+        sx={{
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        {!isCollapsed && (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              background: "linear-gradient(135deg, #6366f1 0%, #ec4899 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            API to MCP
+          </Typography>
+        )}
+        <IconButton
+          onClick={toggleCollapse}
+          sx={{
+            color: "#f1f5f9",
+            "&:hover": {
+              backgroundColor: "rgba(99, 102, 241, 0.1)",
+            },
+          }}
+        >
+          {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
+      </Box>
+
+      {/* Menu */}
+            {/* Menu */}
+      <List sx={{ px: 1, py: 2, flex: 1 }}>
+        {SidebarItems.map((item) => (
+          <ListItemButton
+            key={item.id}
+            selected={activeTab === item.id}
+            onClick={() => {
+              setActiveTab(item.id)
+              setMobileOpen(false)
+            }}
+            sx={{
+              justifyContent: isCollapsed ? "center" : "flex-start",
+              mb: 0.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: isCollapsed ? 0 : 2,
+                color: activeTab === item.id ? "#ffffff" : "#cbd5e1",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            {!isCollapsed && <ListItemText primary={item.label} />}
+          </ListItemButton>
+        ))}
+      </List>
+
+      {/* Bottom Section */}
+      <Box mt="auto">
+        <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.1)" }} />
+
+        {/* User Section */}
+        <Box
+          px={2}
+          py={2}
+          display="flex"
+          alignItems="center"
+          justifyContent={isCollapsed ? "center" : "flex-start"}
+          gap={1}
+        >
+          <Avatar
+            sx={{
+              width: 36,
+              height: 36,
+              background: "linear-gradient(135deg, #6366f1 0%, #ec4899 100%)",
+              fontWeight: 600,
+            }}
+          >
+            {user?.name?.[0]?.toUpperCase() || "U"}
+          </Avatar>
+
+          {!isCollapsed && (
+            <Box>
+              <Typography variant="subtitle2" sx={{ color: "#f1f5f9" }}>
+                {user?.name || "User"}
+              </Typography>
+              <Typography variant="caption" sx={{ color: "#cbd5e1" }}>
+                {user?.plan || "Free"} Plan
+              </Typography>
+            </Box>
+          )}
+        </Box>
+
+        {/* Logout */}
+        <ListItemButton
+          onClick={onLogout}
+          sx={{
+            justifyContent: isCollapsed ? "center" : "flex-start",
+            px: 2,
+            py: 1,
+            mx: 1,
+            mb: 1,
+            borderRadius: "8px",
+            color: "#fca5a5",
+            "&:hover": {
+              backgroundColor: "rgba(239, 68, 68, 0.1)",
+            },
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: isCollapsed ? 0 : 1.5,
+              display: "flex",
+              alignItems: "center",
+              color: "#fca5a5",
+            }}
+          >
+            <LogoutIcon sx={{ fontSize: 20 }} />
+          </ListItemIcon>
+
+          {!isCollapsed && (
+            <ListItemText
+              primary="Logout"
+              primaryTypographyProps={{ fontSize: 14, fontWeight: 500 }}
+            />
+          )}
+        </ListItemButton>
+      </Box>
+    </Box>
+  )
 
   return (
-    <div className="dashboard">
-      <Sidebar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        user={user}
-        onLogout={onLogout}
-        isCollapsed={isCollapsed}
-        onToggle={handleToggle}
-        isMobileOpen={isMobileOpen}
-        onMobileClose={handleMobileClose}
-      />
-      <main className={`main-content ${isCollapsed ? "expanded" : ""}`}>
-        <div className="content-header">
-          <button className="mobile-menu-btn" onClick={handleMobileToggle} aria-label="Open menu">
-            <Menu />
-          </button>
-          <h1 className="page-title">{menuItems.find((item) => item.id === activeTab)?.label || "Dashboard"}</h1>
-        </div>
-        <div className="content-body">{renderContent()}</div>
-      </main>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box display="flex">
+        {/* Top AppBar */}
+        <AppBar position="fixed" sx={{ zIndex: 1201 }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              sx={{ mr: 2, display: { md: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap sx={{ color: "#1e293b", fontWeight: 600 }}>
+              {SidebarItems.find((i) => i.id === activeTab)?.label || "Dashboard"}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        {/* Sidebar Desktop */}
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: isCollapsed ? drawerWidthCollapsed : drawerWidth,
+            transition: "width 0.3s ease",
+            "& .MuiDrawer-paper": {
+              width: isCollapsed ? drawerWidthCollapsed : drawerWidth,
+              transition: "width 0.3s ease",
+              boxSizing: "border-box",
+            },
+            display: { xs: "none", md: "block" },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+
+        {/* Sidebar Mobile */}
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          sx={{
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+
+        {/* Main Content */}
+        <Box
+          component="main"
+          flexGrow={1}
+          p={3}
+          sx={{
+            mt: 8,
+            ml: { md: isCollapsed ? `${drawerWidthCollapsed}px` : `${drawerWidth}px` },
+            transition: "margin 0.3s ease",
+            backgroundColor: "#f8fafc",
+          }}
+        >
+          {renderContent()}
+        </Box>
+      </Box>
+    </ThemeProvider>
   )
 }
-
-// Placeholder components for each tab
-const OverviewTab = () => (
-  <div className="overview-dashboard">
-    <div className="metrics-grid">
-      <div className="metric-card">
-        <div className="metric-icon">📊</div>
-        <div className="metric-content">
-          <h3>API Calls</h3>
-          <div className="metric-value">12,847</div>
-          <div className="metric-change positive">+12.5%</div>
-        </div>
-      </div>
-      <div className="metric-card">
-        <div className="metric-icon">🔧</div>
-        <div className="metric-content">
-          <h3>Active Tools</h3>
-          <div className="metric-value">8</div>
-          <div className="metric-change positive">+2</div>
-        </div>
-      </div>
-      <div className="metric-card">
-        <div className="metric-icon">✅</div>
-        <div className="metric-content">
-          <h3>Success Rate</h3>
-          <div className="metric-value">98.7%</div>
-          <div className="metric-change positive">+0.3%</div>
-        </div>
-      </div>
-      <div className="metric-card">
-        <div className="metric-icon">⚡</div>
-        <div className="metric-content">
-          <h3>Avg Response</h3>
-          <div className="metric-value">245ms</div>
-          <div className="metric-change negative">-15ms</div>
-        </div>
-      </div>
-    </div>
-  </div>
-)
-
-
-
-const ToolsTab = () => (
-  <div className="tools-view">
-    <h2>Generated Tools</h2>
-    <div className="tools-grid">
-      <div className="tool-card">
-        <h3>get_users</h3>
-        <p>Retrieve list of users</p>
-        <div className="tool-status active">Active</div>
-      </div>
-    </div>
-  </div>
-)
-
-const UsageTab = () => (
-  <div className="usage-analytics">
-    <h2>Usage Analytics</h2>
-    <div className="analytics-content">
-      <div className="chart-placeholder">
-        <p>📈 Charts will be implemented here</p>
-      </div>
-    </div>
-  </div>
-)
-
-const ApiKeyTab = () => (
-  <div className="api-key-management">
-    <h2>API Key Management</h2>
-    <div className="api-key-display">
-      <code>ak_live_1234567890abcdef</code>
-      <button className="btn-secondary">Regenerate</button>
-    </div>
-  </div>
-);
-const BillingTab = () => (
-  <div className="billing-section">
-    <h2>Billing & Plans</h2>
-    <div className="plans-grid">
-      <div className="plan-card">
-        <h3>Free Plan</h3>
-        <div className="plan-price">$0/month</div>
-        <ul>
-          <li>1,000 API calls</li>
-          <li>5 active tools</li>
-          <li>Basic support</li>
-        </ul>
-      </div>
-      <div className="plan-card featured">
-        <h3>Pro Plan</h3>
-        <div className="plan-price">$29/month</div>
-        <ul>
-          <li>Unlimited API calls</li>
-          <li>Unlimited tools</li>
-          <li>Priority support</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-);
-
-const SettingsTab = () => (
-  <div className="settings-page">
-    <h2>Settings</h2>
-    <div className="settings-sections">
-      <div className="setting-group">
-        <h3>Appearance</h3>
-        <div className="theme-toggle">
-          <label>
-            <input type="checkbox" />
-            Dark Mode
-          </label>
-        </div>
-      </div>
-      <div className="setting-group">
-        <h3>Security</h3>
-        <button className="btn-secondary">Change Password</button>
-      </div>
-    </div>
-  </div>
-);
-
-const DocsTab = () => (
-  <div className="docs-page">
-    <h2>Documentation</h2>
-    <div className="docs-content">
-      <p>Documentation will be uploaded here</p>
-    </div>
-  </div>
-);
-
-export default Dashboard

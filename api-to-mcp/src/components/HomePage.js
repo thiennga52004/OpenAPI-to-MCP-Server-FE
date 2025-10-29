@@ -1,34 +1,12 @@
 "use client"
+import Header from "./Header"
 import "./HomePage.css"
 
 const HomePage = ({ onNavigateToLogin, onNavigateToDocs, onNavigateToHome }) => {
   return (
     <div className="homepage">
       {/* Navigation */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="nav-logo" >
-            <h2 onClick={onNavigateToHome}>API to MCP</h2>
-          </div>
-          <div className="nav-menu">
-            <a href="#features" className="nav-link">
-              Features
-            </a>
-            <a href="#how-it-works" className="nav-link">
-              How it Works
-            </a>
-            <a href="#pricing" className="nav-link">
-              Pricing
-            </a>
-            <a href="/docs" className="nav-link">
-              Docs
-            </a>
-            <button className="nav-button" onClick={onNavigateToLogin}>
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Header/>
 
       {/* Hero Section */}
       <section className="hero">

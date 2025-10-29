@@ -1,6 +1,18 @@
-import { ChevronDown, Menu, X } from "lucide-react"
-import { useState } from "react"
-import "./DocsSidebar.css"
+import {
+  Drawer,
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  List,
+  ListItemButton,
+  Typography,
+  IconButton,
+  Collapse,
+} from "@mui/material";
+import { Menu, Close, ExpandMore } from "@mui/icons-material";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const sections = [
   {
@@ -18,12 +30,12 @@ const sections = [
       { label: "Configuration", id: "configuration" },
     ],
   },
-]
+];
 
 export default function DocsSidebar({ open, onToggle }) {
   const [expandedSections, setExpandedSections] = useState({
     "Getting Started": true,
-    "Setup & Installation": true,
+    "Setup & Installation": false,
   })
 
   const toggleSection = (title) => {
@@ -33,47 +45,179 @@ export default function DocsSidebar({ open, onToggle }) {
     }))
   }
 
+  const handleItemClick = (id) => {
+    document.querySelector(`#${id}`)?.scrollIntoView({
+      behavior: "smooth",
+    })
+    if (window.innerWidth < 960) {
+      onToggle(false)
+    }
+  }
+
+  const sidebarContent = (
+    <Box
+    
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        py: 3,
+        px: 2,
+      }}
+    >
+      {/* Close button (mobile) */}
+      <IconButton
+        onClick={() => onToggle(false)}
+        sx={{
+          display: { md: "none" },
+          mb: 2,
+          alignSelf: "flex-end",
+          color: "var(--sidebar-foreground)",
+        }}
+      >
+        <Close />
+      </IconButton>
+
+      {/* Logo/Title */}
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 700,
+          mb: 3,
+          color: "var(--sidebar-foreground)",
+          fontSize: "0.875rem",
+          letterSpacing: "0.05em",
+          textTransform: "uppercase",
+        }}
+      >
+        Documentation
+      </Typography>
+
+      {/* Navigation Sections */}
+      <Box sx={{ flex: 1, overflowY: "auto" }}>
+        {sections.map((section) => (
+          <Box key={section.title} sx={{ mb: 1 }}>
+            <ListItemButton
+              onClick={() => toggleSection(section.title)}
+              sx={{
+                px: 2,
+                py: 1.5,
+                borderRadius: "0.375rem",
+                color: "var(--sidebar-foreground)",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  backgroundColor: "var(--sidebar-accent)",
+                  color: "var(--sidebar-accent-foreground)",
+                },
+              }}
+            >
+              <span>{section.title}</span>
+              <ChevronDown
+                sx={{
+                  fontSize: "1.25rem",
+                  transform: expandedSections[section.title] ? "rotate(0deg)" : "rotate(-90deg)",
+                  transition: "transform 0.2s ease",
+                }}
+              />
+            </ListItemButton>
+
+            <Collapse in={expandedSections[section.title]} timeout="auto">
+              <List sx={{ pl: 2 }}>
+                {section.items.map((item) => (
+                  <ListItemButton
+                    key={item.id}
+                    onClick={() => handleItemClick(item.id)}
+                    sx={{
+                      px: 2,
+                      py: 1,
+                      borderRadius: "0.375rem",
+                      color: "var(--sidebar-foreground)",
+                      fontSize: "0.8125rem",
+                      opacity: 0.7,
+                      transition: "all 0.2s ease",
+                      "&:hover": {
+                        opacity: 1,
+                        backgroundColor: "var(--sidebar-accent)",
+                        color: "var(--sidebar-primary)",
+                        pl: 3,
+                      },
+                    }}
+                  >
+                    {item.label}
+                  </ListItemButton>
+                ))}
+              </List>
+            </Collapse>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  )
+
   return (
-    <>
-      {/* Nút mở sidebar cho mobile */}
-      <button className="sidebar-toggle-btn" onClick={() => onToggle(!open)}>
-        {open ? <X size={20} /> : <Menu size={20} />}
-      </button>
+    <Box>
+      {/* Mobile Open Button */}
+      <IconButton
+        onClick={() => onToggle(true)}
+        sx={{
+          display: { md: "none", xs: "inline-flex" },
+          position: "fixed",
+          top: 16,
+          left: 16,
+          zIndex: 1200,
+          color: "var(--foreground)",
+          backgroundColor: "var(--card)",
+          "&:hover": {
+            backgroundColor: "var(--secondary)",
+          },
+        }}
+      >
+        <Menu />
+      </IconButton>
 
-      {/* Sidebar chính */}
-      <aside className={`sidebar ${open ? "open" : ""}`}>
-        <nav className="sidebar-nav">
-          {sections.map((section) => (
-            <div key={section.title} className="sidebar-section">
-              <button
-                onClick={() => toggleSection(section.title)}
-                className="sidebar-section-header"
-              >
-                <span>{section.title}</span>
-                <ChevronDown
-                  size={16}
-                  className={`chevron ${expandedSections[section.title] ? "rotated" : ""}`}
-                />
-              </button>
+      {/* Desktop Drawer */}
+      <Drawer
+        variant="permanent"
+        open
+        sx={{
+          display: { xs: "none", md: "block" },
+          width: 280,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: 280,
+            backgroundColor: "var(--sidebar)",
+            borderRight: "1px solid var(--sidebar-border)",
+            boxSizing: "border-box",
+            zIndex: 900,
+            position: "relative",
+          },
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
 
-              {expandedSections[section.title] && (
-                <ul className="sidebar-list">
-                  {section.items.map((item) => (
-                    <li key={item.id}>
-                      <a href={`#${item.id}`} className="sidebar-link">
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Overlay cho mobile */}
-      {open && <div className="sidebar-overlay" onClick={() => onToggle(false)} />}
-    </>
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={() => onToggle(false)}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            width: 280,
+            backgroundColor: "var(--sidebar)",
+            borderRight: "1px solid var(--sidebar-border)",
+          },
+          zIndex: 900
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
+    </Box>
   )
 }
