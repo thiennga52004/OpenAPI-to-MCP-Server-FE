@@ -12,14 +12,36 @@
   border-right: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: fixed;
   height: 100vh;
   z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar.collapsed {
   width: 80px;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .sidebar-header {
@@ -28,6 +50,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.3s ease;
 }
 
 .logo h2 {
@@ -37,6 +60,12 @@
   background-clip: text;
   font-size: 20px;
   font-weight: 700;
+  margin: 0;
+  transition: font-size 0.3s ease;
+}
+
+.sidebar.collapsed .logo h2 {
+  font-size: 0;
 }
 
 .toggle-btn {
@@ -46,11 +75,30 @@
   cursor: pointer;
   padding: 8px;
   border-radius: 6px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: none;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Added rotation animation for toggle button */
+.toggle-btn.rotated {
+  transform: rotate(180deg);
 }
 
 .toggle-btn:hover {
   background: #f7fafc;
+  color: #4a5568;
+  transform: scale(1.1);
+}
+
+.toggle-btn.rotated:hover {
+  transform: rotate(180deg) scale(1.1);
 }
 
 .sidebar-nav {
@@ -59,6 +107,27 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Smooth scrollbar styling */
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
 
 .nav-item {
@@ -68,31 +137,78 @@
   padding: 12px 20px;
   background: none;
   border: none;
-  color: #718096;
+  color: #4a5568;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
   width: 100%;
+  font-size: 14px;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
 }
 
-.nav-item:hover {
+/* Center icons when sidebar is collapsed */
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+/* Added hover state with smooth animation */
+.nav-item:hover:not(.active) {
   background: #f7fafc;
-  color: #4a5568;
+  color: #2d3748;
+  padding-left: 24px;
+}
+
+.nav-item.hovered:not(.active) {
+  background: #edf2f7;
 }
 
 .nav-item.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Added smooth scale animation for active state */
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: white;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 4px;
+  }
 }
 
 .nav-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover .nav-icon:not(.active) {
+  transform: scale(1.1);
 }
 
 .nav-label {
   font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
 }
 
 .sidebar.collapsed .nav-label {
@@ -102,6 +218,7 @@
 .sidebar-footer {
   padding: 20px;
   border-top: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
 }
 
 .user-info {
@@ -109,6 +226,21 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Center user info when sidebar is collapsed */
+.sidebar.collapsed .user-info {
+  justify-content: center;
+  padding: 12px;
+}
+
+/* Added hover effect for user info */
+.user-info:hover {
+  background: #f7fafc;
 }
 
 .user-avatar {
@@ -120,21 +252,39 @@
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.user-info:hover .user-avatar {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .user-details {
   flex: 1;
+  min-width: 0;
 }
 
 .user-name {
   font-weight: 600;
   color: #2d3748;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
 }
 
 .user-plan {
   font-size: 12px;
   color: #718096;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
 }
 
 .sidebar.collapsed .user-details {
@@ -151,24 +301,60 @@
   cursor: pointer;
   padding: 8px 12px;
   border-radius: 6px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   font-size: 14px;
+  min-height: 44px;
+  font-weight: 500;
 }
 
+/* Center logout button when sidebar is collapsed */
+.sidebar.collapsed .logout-btn {
+  justify-content: center;
+  padding: 12px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Enhanced logout button hover effect */
 .logout-btn:hover {
   background: #fed7d7;
+  color: #c53030;
+  transform: translateX(4px);
+}
+
+.logout-btn:active {
+  transform: translateX(2px);
 }
 
 .sidebar.collapsed .logout-btn span {
   display: none;
 }
 
+/* Show logout-label when sidebar is collapsed, hide logout-text */
+.sidebar.collapsed .logout-btn .logout-text {
+  display: none;
+}
+
+.sidebar.collapsed .logout-btn .logout-label {
+  display: block;
+}
+
+/* Added styling for Sign out label when sidebar is collapsed */
+.logout-label {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
 /* Main Content Styles */
 .main-content {
   flex: 1;
   margin-left: 280px;
-  transition: margin-left 0.3s ease;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content.expanded {
@@ -179,6 +365,33 @@
   background: white;
   border-bottom: 1px solid #e2e8f0;
   padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 75px;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #718096;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 20px;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: #f7fafc;
+  color: #4a5568;
+  transform: scale(1.1);
 }
 
 .page-title {
@@ -186,15 +399,19 @@
   font-weight: 700;
   color: #2d3748;
   margin: 0;
+  flex: 1;
+  transition: font-size 0.3s ease;
 }
 
 .content-body {
   padding: 32px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* Overview Dashboard Styles */
 .overview-dashboard {
-  max-width: 1200px;
+  max-width: 1400px;
 }
 
 .metrics-grid {
@@ -229,10 +446,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .metric-content {
   flex: 1;
+  min-width: 0;
 }
 
 .metric-content h3 {
@@ -240,6 +459,7 @@
   font-weight: 600;
   color: #718096;
   margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
 .metric-value {
@@ -247,11 +467,13 @@
   font-weight: 700;
   color: #2d3748;
   margin-bottom: 4px;
+  margin: 0 0 4px 0;
 }
 
 .metric-change {
   font-size: 12px;
   font-weight: 600;
+  margin: 0;
 }
 
 .metric-change.positive {
@@ -268,6 +490,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .section-header h2 {
@@ -287,6 +511,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+  min-height: 44px;
+  font-size: 14px;
 }
 
 .btn-primary:hover {
@@ -303,6 +530,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-height: 44px;
+  font-size: 14px;
 }
 
 .btn-secondary:hover {
@@ -319,6 +548,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  min-height: 44px;
+  font-size: 14px;
 }
 
 .btn-danger:hover {
@@ -340,6 +571,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.spec-info {
+  flex: 1;
+  min-width: 200px;
 }
 
 .spec-info h3 {
@@ -347,22 +585,25 @@
   font-weight: 600;
   color: #2d3748;
   margin-bottom: 4px;
+  margin: 0 0 4px 0;
 }
 
 .spec-info p {
   color: #718096;
   font-size: 14px;
+  margin: 0;
 }
 
 .spec-actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 /* Tools Styles */
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -378,11 +619,13 @@
   font-weight: 600;
   color: #2d3748;
   margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
 .tool-card p {
   color: #718096;
   margin-bottom: 12px;
+  margin: 0 0 12px 0;
 }
 
 .tool-status {
@@ -401,7 +644,7 @@
 /* Usage Analytics Styles */
 .chart-placeholder {
   background: white;
-  padding: 60px;
+  padding: 60px 20px;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -410,6 +653,7 @@
 .chart-placeholder p {
   font-size: 18px;
   color: #718096;
+  margin: 0;
 }
 
 /* API Key Styles */
@@ -421,15 +665,19 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .api-key-display code {
   flex: 1;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  min-width: 200px;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   background: #f7fafc;
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #e2e8f0;
+  font-size: 12px;
+  overflow-x: auto;
 }
 
 /* Billing Styles */
@@ -458,6 +706,7 @@
   font-weight: 700;
   color: #2d3748;
   margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
 .plan-price {
@@ -465,16 +714,20 @@
   font-weight: 700;
   color: #667eea;
   margin-bottom: 24px;
+  margin: 0 0 24px 0;
 }
 
 .plan-card ul {
   list-style: none;
   text-align: left;
+  padding: 0;
+  margin: 0;
 }
 
 .plan-card li {
   padding: 8px 0;
   color: #4a5568;
+  font-size: 14px;
 }
 
 /* Settings Styles */
@@ -496,6 +749,7 @@
   font-weight: 600;
   color: #2d3748;
   margin-bottom: 16px;
+  margin: 0 0 16px 0;
 }
 
 .theme-toggle label {
@@ -503,12 +757,13 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  min-height: 44px;
 }
 
 /* Docs Styles */
 .docs-content {
   background: white;
-  padding: 40px;
+  padding: 40px 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -517,46 +772,377 @@
 .docs-content p {
   font-size: 18px;
   color: #718096;
+  margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Tablet Responsive Design (768px - 1024px) */
+@media (max-width: 1024px) {
   .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    width: 240px;
   }
-  
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  
+
   .main-content {
-    margin-left: 0;
+    margin-left: 240px;
   }
-  
-  .main-content.expanded {
-    margin-left: 0;
+
+  .content-header {
+    padding: 20px 24px;
   }
-  
+
   .content-body {
-    padding: 20px;
+    padding: 24px;
   }
-  
+
+  .page-title {
+    font-size: 24px;
+  }
+
   .metrics-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-header {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
   }
-  
+
   .plans-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .plan-card.featured {
-    transform: none;
+    transform: scale(1);
   }
+
+  .tools-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+/* Mobile Responsive Design (max-width: 768px) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    animation: slideInLeft 0.3s ease;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .toggle-btn {
+    display: flex;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .main-content.expanded {
+    margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .content-header {
+    padding: 16px 20px;
+    min-height: 60px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .content-body {
+    padding: 16px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .metric-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .metric-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .metric-content h3 {
+    font-size: 12px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+
+  .spec-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .spec-actions {
+    width: 100%;
+  }
+
+  .spec-actions button {
+    flex: 1;
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .api-key-display {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .api-key-display code {
+    width: 100%;
+    font-size: 11px;
+  }
+
+  .api-key-display button {
+    width: 100%;
+  }
+
+  .chart-placeholder {
+    padding: 40px 16px;
+  }
+
+  .chart-placeholder p {
+    font-size: 16px;
+  }
+}
+
+/* Small Mobile Responsive Design (max-width: 480px) */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  .sidebar-header {
+    padding: 16px;
+  }
+
+  .logo h2 {
+    font-size: 18px;
+  }
+
+  .sidebar-nav {
+    padding: 12px 0;
+  }
+
+  .nav-item {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+  }
+
+  .content-header {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .content-body {
+    padding: 12px;
+  }
+
+  .metric-card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .metric-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+
+  .metric-content h3 {
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+
+  .metric-change {
+    font-size: 11px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  .btn-primary {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .spec-item {
+    padding: 16px;
+  }
+
+  .spec-info h3 {
+    font-size: 16px;
+  }
+
+  .spec-info p {
+    font-size: 12px;
+  }
+
+  .spec-actions {
+    gap: 6px;
+  }
+
+  .spec-actions button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .tool-card {
+    padding: 16px;
+  }
+
+  .tool-card h3 {
+    font-size: 16px;
+  }
+
+  .tool-card p {
+    font-size: 13px;
+  }
+
+  .plan-card {
+    padding: 20px;
+  }
+
+  .plan-card h3 {
+    font-size: 20px;
+  }
+
+  .plan-price {
+    font-size: 28px;
+  }
+
+  .plan-card li {
+    font-size: 13px;
+  }
+
+  .setting-group {
+    padding: 16px;
+  }
+
+  .setting-group h3 {
+    font-size: 16px;
+  }
+
+  .docs-content {
+    padding: 24px 16px;
+  }
+
+  .docs-content p {
+    font-size: 16px;
+  }
+  .api-specs {
+  padding: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.spec-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spec-info h3 {
+  margin: 0;
+}
+
+.btn-secondary {
+  background: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #218838;
+}
+
 }

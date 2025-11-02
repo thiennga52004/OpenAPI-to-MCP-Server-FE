@@ -1,81 +1,114 @@
-import React, { useState } from 'react';
-import HomePage from './components/HomePage';
-import { Login, Signup, SuccessScreen } from './components/Auth';
-import Dashboard from './components/Dashboard';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import { Login, Signup, SuccessScreen } from "./components/Auth";
+import Dashboard from "./components/Dashboard";
+import Docs from "./components/Docs";
+import "./App.css";
 
+// Wrapper để sử dụng hook navigate trong App
 function App() {
   const [user, setUser] = useState(null);
-  const [authStep, setAuthStep] = useState('login'); // 'login', 'signup', 'success'
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home'); // 'home', 'login', 'dashboard'
 
+  return (
+    <Router>
+      <AppRoutes user={user} setUser={setUser} />
+    </Router>
+  );
+}
+
+function AppRoutes({ user, setUser }) {
+  const navigate = useNavigate();
+  const isAuthenticated = !!user;
+
+  // --- Handler Functions ---
   const handleLogin = (userData) => {
     setUser(userData);
-    setIsAuthenticated(true);
-    setCurrentPage('dashboard');
+    navigate("/dashboard");
   };
 
   const handleSignup = (userData) => {
     setUser(userData);
-    setAuthStep('success');
+    navigate("/success");
   };
 
   const handleSuccessContinue = () => {
-    setIsAuthenticated(true);
-    setCurrentPage('dashboard');
+    navigate("/dashboard");
   };
 
   const handleLogout = () => {
     setUser(null);
-    setIsAuthenticated(false);
-    setAuthStep('login');
-    setCurrentPage('home');
+    navigate("/");
   };
 
-  const switchToSignup = () => setAuthStep('signup');
-  const switchToLogin = () => setAuthStep('login');
-
-  const navigateToLogin = () => {
-    setCurrentPage('login');
-    setAuthStep('login');
-  };
-
-  const navigateToHome = () => {
-    setCurrentPage('home');
-  };
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage onNavigateToLogin={navigateToLogin} />;
-      case 'login':
-        if (!isAuthenticated) {
-          if (authStep === 'login') {
-            return <Login onLogin={handleLogin} onSwitchToSignup={switchToSignup} />;
-          } else if (authStep === 'signup') {
-            return <Signup onSignup={handleSignup} onSwitchToLogin={switchToLogin} />;
-          } else {
-            return <SuccessScreen user={user} onContinue={handleSuccessContinue} />;
-          }
-        } else {
-          return <Dashboard user={user} onLogout={handleLogout} />;
-        }
-      case 'dashboard':
-        return isAuthenticated ? (
-          <Dashboard user={user} onLogout={handleLogout} />
-        ) : (
-          <Login onLogin={handleLogin} onSwitchToSignup={switchToSignup} />
-        );
-      default:
-        return <HomePage onNavigateToLogin={navigateToLogin} />;
-    }
+  // --- Route Protection (PrivateRoute) ---
+  const PrivateRoute = ({ children }) => {
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
   };
 
   return (
-    <div className="App">
-      {renderPage()}
-    </div>
+    <Routes>
+      {/* Trang chủ */}
+      <Route
+        path="/"
+        element={
+          <HomePage
+            onNavigateToLogin={() => navigate("/login")}
+            onNavigateToDocs={() => navigate("/docs")}
+            onNavigateToHome={() => navigate("/")}
+          />
+        }
+      />
+
+      {/* Trang đăng nhập */}
+      <Route
+        path="/login"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <Login onLogin={handleLogin} onSwitchToSignup={() => navigate("/signup")} />
+          )
+        }
+      />
+
+      {/* Trang đăng ký */}
+      <Route
+        path="/signup"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <Signup onSignup={handleSignup} onSwitchToLogin={() => navigate("/login")} />
+          )
+        }
+      />
+
+      {/* Màn hình đăng ký thành công */}
+      <Route
+        path="/success"
+        element={<SuccessScreen user={user} onContinue={handleSuccessContinue} />}
+      />
+
+      {/* Dashboard — cần login */}
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard user={user} onLogout={handleLogout} />
+          </PrivateRoute>
+        }
+      />
+
+      {/* Trang tài liệu */}
+      <Route path="/docs" element={<Docs 
+            onNavigateToLogin={() => navigate("/login")}
+            onNavigateToDocs={() => navigate("/docs")}
+            onNavigateToHome={() => navigate("/")} />} />
+
+      {/* Mặc định: redirect về trang chủ */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

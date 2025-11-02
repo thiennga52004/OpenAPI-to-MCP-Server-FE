@@ -1,38 +1,29 @@
-import React from 'react';
-import './HomePage.css';
+"use client"
+import Header from "./Header"
+import "./HomePage.css"
 
-const HomePage = ({ onNavigateToLogin }) => {
+const HomePage = ({ onNavigateToLogin, onNavigateToDocs, onNavigateToHome }) => {
   return (
     <div className="homepage">
       {/* Navigation */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="nav-logo">
-            <h2>API to MCP</h2>
-          </div>
-          <div className="nav-menu">
-            <a href="#features" className="nav-link">Features</a>
-            <a href="#how-it-works" className="nav-link">How it Works</a>
-            <a href="#pricing" className="nav-link">Pricing</a>
-            <button className="nav-button" onClick={onNavigateToLogin}>Get Started</button>
-          </div>
-        </div>
-      </nav>
+      <Header/>
 
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Transform Your OpenAPI Documentation into 
+              Transform Your OpenAPI Documentation into
               <span className="highlight"> MCP Servers</span>
             </h1>
             <p className="hero-description">
-              Seamlessly convert your OpenAPI specifications into Model Context Protocol (MCP) servers, 
-              enabling AI assistants to interact with your APIs through intelligent tool calling.
+              Seamlessly convert your OpenAPI specifications into Model Context Protocol (MCP) servers, enabling AI
+              assistants to interact with your APIs through intelligent tool calling.
             </p>
             <div className="hero-buttons">
-              <button className="btn-primary" onClick={onNavigateToLogin}>Start Converting</button>
+              <button className="btn-primary" onClick={onNavigateToLogin}>
+                Start Converting
+              </button>
               <button className="btn-secondary">View Demo</button>
             </div>
           </div>
@@ -92,7 +83,9 @@ const HomePage = ({ onNavigateToLogin }) => {
             <div className="feature-card">
               <div className="feature-icon">🤖</div>
               <h3>AI-Ready</h3>
-              <p>Generate MCP servers optimized for AI tool calling with proper parameter validation and error handling.</p>
+              <p>
+                Generate MCP servers optimized for AI tool calling with proper parameter validation and error handling.
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🔧</div>
@@ -102,7 +95,9 @@ const HomePage = ({ onNavigateToLogin }) => {
             <div className="feature-card">
               <div className="feature-icon">📊</div>
               <h3>Analytics</h3>
-              <p>Track API usage, monitor performance, and get insights into how AI assistants interact with your tools.</p>
+              <p>
+                Track API usage, monitor performance, and get insights into how AI assistants interact with your tools.
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🔒</div>
@@ -154,7 +149,9 @@ const HomePage = ({ onNavigateToLogin }) => {
           <div className="cta-content">
             <h2>Ready to Transform Your APIs?</h2>
             <p>Join thousands of developers who are already using API to MCP to make their APIs AI-ready.</p>
-            <button className="btn-primary large" onClick={onNavigateToLogin}>Get Started Free</button>
+            <button className="btn-primary large" onClick={onNavigateToLogin}>
+              Get Started Free
+            </button>
           </div>
         </div>
       </section>
@@ -170,35 +167,53 @@ const HomePage = ({ onNavigateToLogin }) => {
             <div className="footer-section">
               <h4>Product</h4>
               <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#docs">Documentation</a></li>
+                <li>
+                  <a href="#features">Features</a>
+                </li>
+                <li>
+                  <a href="#pricing">Pricing</a>
+                </li>
+                <li>
+                  <a href="/docs">Documentation</a>
+                </li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Support</h4>
               <ul>
-                <li><a href="#help">Help Center</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-                <li><a href="#status">Status</a></li>
+                <li>
+                  <a href="#help">Help Center</a>
+                </li>
+                <li>
+                  <a href="#contact">Contact Us</a>
+                </li>
+                <li>
+                  <a href="#status">Status</a>
+                </li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Company</h4>
               <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#careers">Careers</a></li>
+                <li>
+                  <a href="#about">About</a>
+                </li>
+                <li>
+                  <a href="#blog">Blog</a>
+                </li>
+                <li>
+                  <a href="#careers">Careers</a>
+                </li>
               </ul>
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 API to MCP. All rights reserved.</p>
+            <p>&copy; 2025 API to MCP. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
