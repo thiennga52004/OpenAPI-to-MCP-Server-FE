@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_DOMAIN || "http://57.158.26.182:8081"
 // Simple icon components to replace lucide-react
 const Eye = () => <span>👁</span>;
 const EyeOff = () => <span>🙈</span>;
@@ -16,21 +17,41 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => { 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      onLogin({
-        name: 'John Developer',
-        email: formData.email,
-        apiKey: 'ak_live_1234567890abcdef',
-        plan: 'Free'
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 1000);
+
+      const data = await response.json();
+
+      if (response.status === 401) {
+        setError(data.error || 'Invalid email or password.');
+      } else if (data.success) {
+        // Store the token
+        localStorage.setItem('JWTtoken', data.data.JWTtoken);
+        onLogin(data.data);
+      } else {
+        // Handle other login failures
+        setError(data.message || 'Login failed');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Login error:', error);
+      setError('An error occurred during login.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -38,6 +59,7 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
   return (
@@ -47,6 +69,8 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
           <h1>Welcome Back</h1>
           <p>Sign in to your API to MCP account</p>
         </div>
+
+        {error && <div className="auth-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="input-group">
