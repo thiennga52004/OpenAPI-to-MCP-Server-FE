@@ -10,10 +10,8 @@ export default function ApiSpecsTab() {
   const fileInputRef = useRef(null)
   const [error, setError] = useState(null)
 
-  // 🔑 API key — giả sử lưu trong localStorage sau khi login
-  //const apiKey = localStorage.getItem("X-API-KEY")
-    // for test REPLACE THIS WHEN DEPLOYING
-  const apiKey = "6ba0891cf77e90eb93b42c597d6cb1f448f8321aa2e4230b3c91fe09763635e6"
+  // 🔑 JWT token — lưu trong localStorage sau khi login
+  const jwtToken = localStorage.getItem("JWTtoken")
   // 📦 Gọi API specs khi load
   useEffect(() => {
     fetchSpecs()
@@ -25,7 +23,7 @@ export default function ApiSpecsTab() {
       setLoading(true)
       const res = await fetch(`${API_BASE_URL}/api/specs`, {
         headers: {
-          "X-API-Key": apiKey,
+          "Authorization": `Bearer ${jwtToken}`,
         },
       })
       if (!res.ok) {
@@ -68,7 +66,7 @@ export default function ApiSpecsTab() {
       const res = await fetch(`${API_BASE_URL}/api/spec`, {
         method: "POST",
         headers: {
-          Authorization: `X-API-KEY ${apiKey}`,
+          "Authorization": `Bearer ${jwtToken}`,
         },
         body: formData,
       })
@@ -100,7 +98,7 @@ export default function ApiSpecsTab() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-Key": apiKey,
+        "Authorization": `Bearer ${jwtToken}`,
       },
       body: JSON.stringify({ spec_id: specId }),
     });
