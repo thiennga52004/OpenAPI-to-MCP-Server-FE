@@ -34,6 +34,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { ChatBubble } from "@mui/icons-material";
 
 import ApiSpecsTab from "./dashboards/ApiSpecs";
 import DocsPage from "./Docs";
@@ -116,9 +117,11 @@ const SidebarItems = [
   { id: "overview", label: "Overview", icon: <BarChartIcon /> },
   { id: "api-specs", label: "API Specs", icon: <DescriptionIcon /> },
   { id: "api-key", label: "API Key", icon: <VpnKeyIcon /> },
+  { id: "tools", label: "Tools", icon: <BuildIcon /> },
   { id: "billing", label: "Billing", icon: <CreditCardIcon /> },
   { id: "settings", label: "Settings", icon: <SettingsIcon /> },
   { id: "docs", label: "Docs", icon: <MenuBookIcon /> },
+  { id: "chatbot", label: "Chatbot", icon: <ChatBubble /> },
 ];
 
 export default function Dashboard({ user, onLogout }) {
@@ -201,6 +204,10 @@ export default function Dashboard({ user, onLogout }) {
         return <Typography>Will be updated soon</Typography>;
       case "api-key":
         return <Typography>Will be updated soon</Typography>;
+      case "tools":
+        return <Typography>Will be updated soon</Typography>;
+      case "chatbot":
+        navigate("/chat");
       default:
         return <Typography>Hiển thị nội dung tab: {activeTab}</Typography>;
     }
