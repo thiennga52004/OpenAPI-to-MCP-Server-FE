@@ -11,8 +11,8 @@ import HomePage from "./components/HomePage";
 import { Login, Signup, SuccessScreen } from "./components/Auth";
 import Dashboard from "./components/Dashboard";
 import Docs from "./components/Docs";
-import "./App.css";
 import Chatbot from "./components/mcp/chatbot";
+import "./App.css";
 
 // Wrapper để dùng hook navigate trong App
 function App() {
@@ -27,6 +27,7 @@ function App() {
 
 function AppRoutes({ token, setToken }) {
   const navigate = useNavigate();
+  // Kiểm tra token có tồn tại không để xác định trạng thái đăng nhập
   const isAuthenticated = !!token;
 
   // --- Handler Functions ---
@@ -51,8 +52,10 @@ function AppRoutes({ token, setToken }) {
   };
 
   // --- Route Protection (PrivateRoute) ---
+  // Component này sẽ kiểm tra auth, nếu không có token sẽ đẩy về trang chủ (hoặc login)
   const PrivateRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/" replace />;
+    // Mẹo: Nên đẩy về /login thay vì / để trải nghiệm tốt hơn
   };
 
   return (
@@ -101,6 +104,8 @@ function AppRoutes({ token, setToken }) {
         element={<SuccessScreen onContinue={handleSuccessContinue} />}
       />
 
+      {/* --- CÁC ROUTE CẦN BẢO VỆ --- */}
+
       <Route
         path="/dashboard"
         element={
@@ -110,10 +115,20 @@ function AppRoutes({ token, setToken }) {
         }
       />
 
+      {/* Đã thêm bảo vệ cho /chat */}
+      <Route
+        path="/chat"
+        element={
+          <PrivateRoute>
+            <Chatbot />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="/docs" element={<Docs />} />
 
+      {/* Route * (404) luôn để cuối cùng */}
       <Route path="*" element={<Navigate to="/" replace />} />
-      <Route path="/chat" element= {<Chatbot/>} />
     </Routes>
   );
 }
