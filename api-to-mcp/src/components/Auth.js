@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./Auth.css";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_DOMAIN || "http://57.158.26.182:8081";
@@ -9,18 +11,28 @@ const EyeOff = () => <span>🙈</span>;
 const ArrowRight = () => <span>→</span>;
 
 const Login = ({ onLogin, onSwitchToSignup }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const location = useLocation();
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  // State riêng cho thông báo thành công
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Kiểm tra xem có lời nhắn từ trang Signup gửi qua không
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Xóa state trong history để F5 không hiện lại (tuỳ chọn, nhưng nên làm để clean)
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setSuccessMessage("");
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/login`, {
@@ -67,7 +79,22 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
           <h1>Welcome Back</h1>
           <p>Sign in to your API to MCP account</p>
         </div>
-
+        {successMessage && (
+          <div
+            className="auth-success"
+            style={{
+              color: "#155724",
+              backgroundColor: "#d4edda",
+              borderColor: "#c3e6cb",
+              padding: "10px",
+              borderRadius: "4px",
+              marginBottom: "15px",
+              fontSize: "14px",
+            }}
+          >
+            {successMessage}
+          </div>
+        )}
         {error && <div className="auth-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
@@ -141,23 +168,45 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 1. Kiểm tra xác nhận mật khẩu
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      alert("Mật khẩu xác nhận không khớp!");
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      onSignup({
-        name: formData.name,
-        email: formData.email,
-        apiKey: "ak_live_" + Math.random().toString(36).substr(2, 20),
-        plan: "Free",
+    try {
+      // 2. Gọi API đăng ký
+      const response = await fetch(`${API_BASE_URL}/api/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          company_name: "ctu",
+          plan: "free",
+        }),
       });
-    }, 1000);
+
+      const data = await response.json();
+
+      // 3. Xử lý phản hồi
+      if (response.ok && data.success) {
+        // Nếu thành công, gọi onSignup để App.js điều hướng về Login
+        onSignup();
+      } else {
+        // Nếu thất bại, hiện thông báo lỗi từ backend
+        alert(data.message || "Đăng ký thất bại, vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Register error:", error);
+      alert("Lỗi kết nối đến server.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {

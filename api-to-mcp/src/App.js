@@ -36,9 +36,10 @@ function AppRoutes({ token, setToken }) {
     navigate("/dashboard");
   };
 
-  const handleSignup = (userData) => {
-    setToken(localStorage.getItem("JWTtoken"));
-    navigate("/success");
+  const handleSignup = () => {
+    navigate("/login", {
+      state: { message: "Sign up successful! Please log in." },
+    });
   };
 
   const handleSuccessContinue = () => {
