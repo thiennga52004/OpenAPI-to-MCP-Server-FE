@@ -40,6 +40,7 @@ import ApiSpecsTab from "./dashboards/ApiSpecs";
 import DocsPage from "./Docs";
 import Billing from "./dashboards/Billing";
 import { Navigate, useNavigate } from "react-router-dom";
+import ToolsPage from "./dashboards/ToolsPage";
 
 const drawerWidth = 240;
 const drawerWidthCollapsed = 72;
@@ -116,7 +117,6 @@ const theme = createTheme({
 const SidebarItems = [
   { id: "overview", label: "Overview", icon: <BarChartIcon /> },
   { id: "api-specs", label: "API Specs", icon: <DescriptionIcon /> },
-  { id: "api-key", label: "API Key", icon: <VpnKeyIcon /> },
   { id: "tools", label: "Tools", icon: <BuildIcon /> },
   { id: "billing", label: "Billing", icon: <CreditCardIcon /> },
   { id: "settings", label: "Settings", icon: <SettingsIcon /> },
@@ -202,10 +202,8 @@ export default function Dashboard({ user, onLogout }) {
         return <Billing />;
       case "settings":
         return <Typography>Will be updated soon</Typography>;
-      case "api-key":
-        return <Typography>Will be updated soon</Typography>;
       case "tools":
-        return <Typography>Will be updated soon</Typography>;
+        return <ToolsPage/>;
       case "chatbot":
         navigate("/chat");
       default:
