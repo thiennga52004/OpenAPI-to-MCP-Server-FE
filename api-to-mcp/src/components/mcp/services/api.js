@@ -1,7 +1,8 @@
 // services/api.js
 import axios from 'axios';
 const API_DOMAIN = process.env.REACT_APP_API_DOMAIN
-const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFQSS1LRVkiOiI2YmEwODkxY2Y3N2U5MGViOTNiNDJjNTk3ZDZjYjFmNDQ4ZjgzMjFhYTJlNDIzMGIzYzkxZmUwOTc2MzYzNWU2IiwiZXhwIjoxNzY1MzQyMzg5LCJ1c2VyX2lkIjoiNGU1ZjQyYjItYWRkZS00ZTBhLTgxMjItNDI1NDBmZDliMmQ5In0.PpoVDUQkobIYP1XCWvoVhMf7SNmpw5i3QbHdKnSwRK4'; // Thay token hoặc lấy từ localStorage
+//lấy token từ biến môi trường hoặc localStorage
+const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFQSS1LRVkiOiI2YmEwODkxY2Y3N2U5MGViOTNiNDJjNTk3ZDZjYjFmNDQ4ZjgzMjFhYTJlNDIzMGIzYzkxZmUwOTc2MzYzNWU2IiwiZXhwIjoxNzY1MzU1MjM0LCJ1c2VyX2lkIjoiNGU1ZjQyYjItYWRkZS00ZTBhLTgxMjItNDI1NDBmZDliMmQ5In0.oUJlQcJPNinOt0peftXBYpq1amy-c4LrSh-Ty66Vvw8'; // Thay token hoặc lấy từ localStorage
 
 const client = axios.create({
   baseURL: API_DOMAIN,

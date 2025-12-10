@@ -2,12 +2,10 @@
 
 // Hàm giúp tạm dừng (sleep)
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const apikey = process.env.GEMINI_API_KEY;
 
 export const callGeminiAPI = async (history, tools = [], retryCount = 0) => {
-    const apiKey = "AIzaSyCa7_xXIGcOSFAjt_1JAYivpuxh1Sb-hrw"; // API Key của bạn
-    
-    // --- SỬA 1: Dùng Model ổn định thay vì bản 2.0 Experimental ---
-    // gemini-1.5-flash: Nhanh, rẻ (free), quota cao, gọi tool tốt.
+    const apiKey = apikey; // Lấy từ biến môi trường
     const modelName = "gemini-2.5-flash"; 
     
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
