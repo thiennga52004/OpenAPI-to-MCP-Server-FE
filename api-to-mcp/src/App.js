@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// 1. Import axios
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,7 +16,9 @@ import Docs from "./components/Docs";
 import Chatbot from "./components/mcp/chatbot";
 import "./App.css";
 
-// Wrapper để dùng hook navigate trong App
+// Giả sử domain API của bạn (thay thế bằng domain thật)
+const API_DOMAIN = "http://localhost:3000";
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("JWTtoken"));
 
@@ -27,10 +31,16 @@ function App() {
 
 function AppRoutes({ token, setToken }) {
   const navigate = useNavigate();
-  // Kiểm tra token có tồn tại không để xác định trạng thái đăng nhập
   const isAuthenticated = !!token;
 
   // --- Handler Functions ---
+  const handleLogout = () => {
+    console.log("Token hết hạn hoặc không hợp lệ. Đang đăng xuất...");
+    localStorage.removeItem("JWTtoken");
+    setToken(null);
+    navigate("/");
+  };
+
   const handleLogin = (userData) => {
     setToken(localStorage.getItem("JWTtoken"));
     navigate("/dashboard");
@@ -46,17 +56,51 @@ function AppRoutes({ token, setToken }) {
     navigate("/dashboard");
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("JWTtoken");
-    setToken(null);
-    navigate("/");
-  };
+  // --- 2. Logic dùng API Tools để kiểm tra Token ---
+  useEffect(() => {
+    const checkAuthWithTools = async () => {
+      // Lấy token từ localStorage (theo code mẫu bạn gửi)
+      // hoặc dùng biến 'token' từ props đều được
+      const currentToken = localStorage.getItem("JWTtoken");
 
-  // --- Route Protection (PrivateRoute) ---
-  // Component này sẽ kiểm tra auth, nếu không có token sẽ đẩy về trang chủ (hoặc login)
+      // Nếu không có token thì thôi, không cần check
+      if (!currentToken) return;
+
+      try {
+        // Gọi API tools như một cách để "Ping" kiểm tra quyền truy cập
+        await axios.get(`${API_DOMAIN}/api/tools`, {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+        });
+
+        // Nếu chạy xuống đây nghĩa là API trả về 200 OK -> Token VẪN CÒN SỐNG.
+        // Ta không cần làm gì cả (vì AppRoutes không cần hiển thị tools).
+        console.log("Token verified via Tools API.");
+      } catch (err) {
+        console.error("Error validating token:", err);
+
+        // Quan trọng: Kiểm tra xem lỗi có phải do Token hết hạn/sai không (401 hoặc 403)
+        if (
+          err.response &&
+          (err.response.status === 401 || err.response.status === 403)
+        ) {
+          // Nếu đúng là lỗi xác thực -> Gọi hàm Logout ngay
+          handleLogout();
+        }
+        // Các lỗi khác (500, mạng...) có thể bỏ qua ở đây, để Dashboard tự xử lý
+      }
+    };
+
+    checkAuthWithTools();
+
+    // (Tùy chọn) Check lại mỗi khi chuyển trang hoặc định kỳ
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]); // Chạy lại mỗi khi token thay đổi
+
+  // --- Route Protection ---
   const PrivateRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/" replace />;
-    // Mẹo: Nên đẩy về /login thay vì / để trải nghiệm tốt hơn
   };
 
   return (
@@ -105,8 +149,6 @@ function AppRoutes({ token, setToken }) {
         element={<SuccessScreen onContinue={handleSuccessContinue} />}
       />
 
-      {/* --- CÁC ROUTE CẦN BẢO VỆ --- */}
-
       <Route
         path="/dashboard"
         element={
@@ -116,7 +158,6 @@ function AppRoutes({ token, setToken }) {
         }
       />
 
-      {/* Đã thêm bảo vệ cho /chat */}
       <Route
         path="/chat"
         element={
@@ -127,8 +168,6 @@ function AppRoutes({ token, setToken }) {
       />
 
       <Route path="/docs" element={<Docs />} />
-
-      {/* Route * (404) luôn để cuối cùng */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
