@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, use } from "react"
 import "../Dashboard.css"
 import ErrorPage from "../ErrorPage"
+import toast, { Toaster } from 'react-hot-toast'
 
 const API_BASE_URL = process.env.REACT_APP_API_DOMAIN || "https://your-domain.com"
 
@@ -61,9 +62,13 @@ export default function ApiSpecsTab() {
     const formData = new FormData()
     formData.append("file", file)
 
+    // Hiển thị toast loading (lưu id để update sau này)
+    const toastId = toast.loading("Uploading...") 
+
+    setLoading(true)
     try {
       setLoading(true)
-      const res = await fetch(`${API_BASE_URL}/api/spec`, {
+      const res = await fetch(`${API_BASE_URL}/upload`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${jwtToken}`,
@@ -73,10 +78,12 @@ export default function ApiSpecsTab() {
 
       const data = await res.json()
       if (data.success) {
-        alert("Upload thành công!")
-        fetchSpecs() // reload lại danh sách
+        // Chuyển toast loading thành success
+        toast.success("Upload Success!", { id: toastId }) 
+        fetchSpecs()
       } else {
-        alert("Upload thất bại!")
+        // Chuyển toast loading thành error
+        toast.error("Upload Failed: " + (data.message || "Server error"), { id: toastId })
         console.error(data)
       }
     } catch (err) {
@@ -150,6 +157,7 @@ export default function ApiSpecsTab() {
 
   return (
     <div className="api-specs">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="section-header">
         <h2>API Specifications</h2>
         <button className="btn-primary" onClick={handleUploadClick} disabled={loading}>

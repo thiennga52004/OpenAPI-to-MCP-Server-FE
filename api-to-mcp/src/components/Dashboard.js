@@ -115,7 +115,6 @@ const theme = createTheme({
 });
 
 const SidebarItems = [
-  { id: "overview", label: "Overview", icon: <BarChartIcon /> },
   { id: "api-specs", label: "API Specs", icon: <DescriptionIcon /> },
   { id: "tools", label: "Tools", icon: <BuildIcon /> },
   { id: "billing", label: "Billing", icon: <CreditCardIcon /> },
@@ -126,7 +125,7 @@ const SidebarItems = [
 
 export default function Dashboard({ user, onLogout }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("api-specs");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -136,66 +135,7 @@ export default function Dashboard({ user, onLogout }) {
     switch (activeTab) {
       case "api-specs":
         return <ApiSpecsTab />;
-      case "overview":
-        return (
-          <Box>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
-              Overview
-            </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-              Welcome back! Here's your API dashboard.
-            </Typography>
-            <Grid container spacing={2}>
-              {[
-                { label: "Total Requests", value: "2.4M", change: "+12%" },
-                { label: "Success Rate", value: "99.8%", change: "+0.2%" },
-                { label: "Avg Response", value: "145ms", change: "-8%" },
-                { label: "Active Keys", value: "12", change: "0" },
-              ].map((stat, i) => (
-                <Grid item xs={12} sm={6} md={3} key={i}>
-                  <Paper
-                    sx={{
-                      p: 2.5,
-                      borderRadius: "12px",
-                      backgroundColor: "#ffffff",
-                      border: "1px solid #e2e8f0",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                        borderColor: "#cbd5e1",
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      color="textSecondary"
-                      sx={{ fontWeight: 500 }}
-                    >
-                      {stat.label}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 700, mt: 1, mb: 0.5 }}
-                    >
-                      {stat.value}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: stat.change.startsWith("+")
-                          ? "#10b981"
-                          : "#ef4444",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {stat.change} from last month
-                    </Typography>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        );
+      
       case "docs":
         navigate("/docs");
       case "billing":

@@ -46,8 +46,8 @@ const ToolsPage = () => {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>Danh Sách Công Cụ (MCP Tools)</h1>
-        <p style={styles.subtitle}>Tìm thấy <strong>{tools.length}</strong> công cụ khả dụng trên hệ thống.</p>
+        <h1 style={styles.title}>MCP TOOLS LIST</h1>
+        <p style={styles.subtitle}>Find <strong>{tools.length}</strong> tools in system.</p>
       </header>
 
       <div style={styles.grid}>
@@ -74,9 +74,9 @@ const ToolCard = ({ tool }) => {
       <p style={styles.description}>{tool.description || "Không có mô tả"}</p>
 
       <div style={styles.schemaContainer}>
-        <h4 style={styles.schemaTitle}>Tham số đầu vào (Inputs):</h4>
+        <h4 style={styles.schemaTitle}>Inputs argument:</h4>
         {Object.keys(properties).length === 0 ? (
-          <p style={{fontStyle: 'italic', color: '#666', fontSize: '13px'}}>Không yêu cầu tham số</p>
+          <p style={{fontStyle: 'italic', color: '#666', fontSize: '13px'}}>argument not required</p>
         ) : (
           <table style={styles.table}>
             <thead>
