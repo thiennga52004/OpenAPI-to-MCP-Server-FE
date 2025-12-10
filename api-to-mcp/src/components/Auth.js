@@ -1,34 +1,32 @@
-import React, { useState } from 'react';
-import './Auth.css';
+import React, { useState } from "react";
+import "./Auth.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_DOMAIN || "http://57.158.26.182:8081"
+const API_BASE_URL =
+  process.env.REACT_APP_API_DOMAIN || "http://57.158.26.182:8081";
 // Simple icon components to replace lucide-react
 const Eye = () => <span>👁</span>;
 const EyeOff = () => <span>🙈</span>;
-const Mail = () => <span>📧</span>;
-const Lock = () => <span>🔒</span>;
-const User = () => <span>👤</span>;
 const ArrowRight = () => <span>→</span>;
 
 const Login = ({ onLogin, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -36,19 +34,19 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
       const data = await response.json();
 
       if (response.status === 401) {
-        setError(data.error || 'Invalid email or password.');
+        setError(data.error || "Invalid email or password.");
       } else if (data.success) {
         // Store the token
-        localStorage.setItem('JWTtoken', data.data.JWTtoken);
+        localStorage.setItem("JWTtoken", data.data.JWTtoken);
         onLogin(data.data);
       } else {
         // Handle other login failures
-        setError(data.message || 'Login failed');
+        setError(data.message || "Login failed");
       }
     } catch (error) {
       // Handle network or other errors
-      console.error('Login error:', error);
-      setError('An error occurred during login.');
+      console.error("Login error:", error);
+      setError("An error occurred during login.");
     } finally {
       setIsLoading(false);
     }
@@ -57,9 +55,9 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   return (
@@ -76,7 +74,6 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <div className="input-wrapper">
-              <Mail className="input-icon" />
               <input
                 type="email"
                 id="email"
@@ -92,9 +89,8 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <div className="input-wrapper">
-              <Lock className="input-icon" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={formData.password}
@@ -113,14 +109,14 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? "Signing In..." : "Sign In"}
             <ArrowRight />
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <button onClick={onSwitchToSignup} className="auth-link">
               Sign up
             </button>
@@ -133,10 +129,10 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
 
 const Signup = ({ onSignup, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -144,22 +140,22 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      alert("Passwords do not match");
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       onSignup({
         name: formData.name,
         email: formData.email,
-        apiKey: 'ak_live_' + Math.random().toString(36).substr(2, 20),
-        plan: 'Free'
+        apiKey: "ak_live_" + Math.random().toString(36).substr(2, 20),
+        plan: "Free",
       });
     }, 1000);
   };
@@ -167,7 +163,7 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -183,7 +179,6 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
           <div className="input-group">
             <label htmlFor="name">Full Name</label>
             <div className="input-wrapper">
-              <User className="input-icon" />
               <input
                 type="text"
                 id="name"
@@ -199,7 +194,6 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <div className="input-wrapper">
-              <Mail className="input-icon" />
               <input
                 type="email"
                 id="email"
@@ -215,9 +209,8 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <div className="input-wrapper">
-              <Lock className="input-icon" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={formData.password}
@@ -238,9 +231,8 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
           <div className="input-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <div className="input-wrapper">
-              <Lock className="input-icon" />
               <input
-                type={showConfirmPassword ? 'text' : 'password'}
+                type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -259,14 +251,14 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {isLoading ? "Creating Account..." : "Create Account"}
             <ArrowRight />
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            Already have an account?{' '}
+            Already have an account?{" "}
             <button onClick={onSwitchToLogin} className="auth-link">
               Sign in
             </button>
@@ -311,7 +303,8 @@ const SuccessScreen = ({ user, onContinue }) => {
               <button className="copy-button">Copy</button>
             </div>
             <p className="api-key-note">
-              Keep this API key secure. You'll use it to authenticate your MCP servers.
+              Keep this API key secure. You'll use it to authenticate your MCP
+              servers.
             </p>
           </div>
 

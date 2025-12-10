@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
-import ChevronRightIcon from "@mui/icons-material/ChevronRight"
+import { useState } from "react";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import {
   Drawer,
@@ -22,25 +22,26 @@ import {
   ThemeProvider,
   createTheme,
   CssBaseline,
-} from "@mui/material"
+} from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu"
-import BarChartIcon from "@mui/icons-material/BarChart"
-import DescriptionIcon from "@mui/icons-material/Description"
-import BuildIcon from "@mui/icons-material/Build"
-import TrendingUpIcon from "@mui/icons-material/TrendingUp"
-import VpnKeyIcon from "@mui/icons-material/VpnKey"
-import CreditCardIcon from "@mui/icons-material/CreditCard"
-import SettingsIcon from "@mui/icons-material/Settings"
-import MenuBookIcon from "@mui/icons-material/MenuBook"
-import LogoutIcon from "@mui/icons-material/Logout"
+import MenuIcon from "@mui/icons-material/Menu";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import BuildIcon from "@mui/icons-material/Build";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import SettingsIcon from "@mui/icons-material/Settings";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-import ApiSpecsTab from "./dashboards/ApiSpecs"
-import DocsPage from "./Docs"
-import { Navigate, useNavigate } from "react-router-dom"
+import ApiSpecsTab from "./dashboards/ApiSpecs";
+import DocsPage from "./Docs";
+import Billing from "./dashboards/Billing";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const drawerWidth = 240
-const drawerWidthCollapsed = 72
+const drawerWidth = 240;
+const drawerWidthCollapsed = 72;
 
 const theme = createTheme({
   palette: {
@@ -55,7 +56,6 @@ const theme = createTheme({
     },
     background: {
       default: "#f8fafc",
-      paper: "#ffffff",
     },
     divider: "#e2e8f0",
   },
@@ -77,6 +77,7 @@ const theme = createTheme({
           color: "#1e293b",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
           borderBottom: "1px solid #e2e8f0",
+          height: 70,
         },
       },
     },
@@ -109,31 +110,29 @@ const theme = createTheme({
       },
     },
   },
-})
+});
 
 const SidebarItems = [
   { id: "overview", label: "Overview", icon: <BarChartIcon /> },
   { id: "api-specs", label: "API Specs", icon: <DescriptionIcon /> },
-  { id: "tools", label: "Tools", icon: <BuildIcon /> },
-  { id: "usage", label: "Usage", icon: <TrendingUpIcon /> },
   { id: "api-key", label: "API Key", icon: <VpnKeyIcon /> },
   { id: "billing", label: "Billing", icon: <CreditCardIcon /> },
   { id: "settings", label: "Settings", icon: <SettingsIcon /> },
   { id: "docs", label: "Docs", icon: <MenuBookIcon /> },
-]
+];
 
 export default function Dashboard({ user, onLogout }) {
-  const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState("overview")
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const toggleCollapse = () => setIsCollapsed(!isCollapsed)
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   const renderContent = () => {
     switch (activeTab) {
       case "api-specs":
-        return <ApiSpecsTab />
+        return <ApiSpecsTab />;
       case "overview":
         return (
           <Box>
@@ -164,16 +163,25 @@ export default function Dashboard({ user, onLogout }) {
                       },
                     }}
                   >
-                    <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 500 }}>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      sx={{ fontWeight: 500 }}
+                    >
                       {stat.label}
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 700, mt: 1, mb: 0.5 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 700, mt: 1, mb: 0.5 }}
+                    >
                       {stat.value}
                     </Typography>
                     <Typography
                       variant="caption"
                       sx={{
-                        color: stat.change.startsWith("+") ? "#10b981" : "#ef4444",
+                        color: stat.change.startsWith("+")
+                          ? "#10b981"
+                          : "#ef4444",
                         fontWeight: 500,
                       }}
                     >
@@ -184,13 +192,19 @@ export default function Dashboard({ user, onLogout }) {
               ))}
             </Grid>
           </Box>
-        )
-        case "docs":
-          navigate("/docs")
+        );
+      case "docs":
+        navigate("/docs");
+      case "billing":
+        return <Billing />;
+      case "settings":
+        return <Typography>Will be updated soon</Typography>;
+      case "api-key":
+        return <Typography>Will be updated soon</Typography>;
       default:
-        return <Typography>Hiển thị nội dung tab: {activeTab}</Typography>
+        return <Typography>Hiển thị nội dung tab: {activeTab}</Typography>;
     }
-  }
+  };
 
   const drawer = (
     <Box display="flex" flexDirection="column" height="100%">
@@ -233,15 +247,15 @@ export default function Dashboard({ user, onLogout }) {
       </Box>
 
       {/* Menu */}
-            {/* Menu */}
+      {/* Menu */}
       <List sx={{ px: 1, py: 2, flex: 1 }}>
         {SidebarItems.map((item) => (
           <ListItemButton
             key={item.id}
             selected={activeTab === item.id}
             onClick={() => {
-              setActiveTab(item.id)
-              setMobileOpen(false)
+              setActiveTab(item.id);
+              setMobileOpen(false);
             }}
             sx={{
               justifyContent: isCollapsed ? "center" : "flex-start",
@@ -335,7 +349,7 @@ export default function Dashboard({ user, onLogout }) {
         </ListItemButton>
       </Box>
     </Box>
-  )
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -352,8 +366,13 @@ export default function Dashboard({ user, onLogout }) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap sx={{ color: "#1e293b", fontWeight: 600 }}>
-              {SidebarItems.find((i) => i.id === activeTab)?.label || "Dashboard"}
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{ color: "#1e293b", fontWeight: 600 }}
+            >
+              {SidebarItems.find((i) => i.id === activeTab)?.label ||
+                "Dashboard"}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -400,14 +419,23 @@ export default function Dashboard({ user, onLogout }) {
           p={3}
           sx={{
             mt: 8,
-            ml: { md: isCollapsed ? `${drawerWidthCollapsed}px` : `${drawerWidth}px` },
+            ml: {
+              md: isCollapsed
+                ? `${drawerWidthCollapsed}px`
+                : `${drawerWidth}px`,
+            },
             transition: "margin 0.3s ease",
+            marginLeft: { xs: 0, md: 0 },
             backgroundColor: "#f8fafc",
+            alignItems: "center",
+            flex: 1,
+            width: "100%",
+            height: "100%",
           }}
         >
           {renderContent()}
         </Box>
       </Box>
     </ThemeProvider>
-  )
+  );
 }

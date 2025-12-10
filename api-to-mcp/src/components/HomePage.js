@@ -171,9 +171,6 @@ const HomePage = ({ onNavigateToLogin, onNavigateToDocs, onNavigateToHome }) => 
                   <a href="#features">Features</a>
                 </li>
                 <li>
-                  <a href="#pricing">Pricing</a>
-                </li>
-                <li>
                   <a href="/docs">Documentation</a>
                 </li>
               </ul>

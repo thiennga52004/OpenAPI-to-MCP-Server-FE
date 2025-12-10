@@ -5,9 +5,19 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <AppBar  position="static" color="inherit" elevation={0} sx={{height: 80, justifyContent: "center", }}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between",color: "667eea" }}>
-
+    <AppBar
+      position="static"
+      color="inherit"
+      elevation={0}
+      sx={{ height: 80, justifyContent: "center" }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          color: "667eea",
+        }}
+      >
         {/* Logo sát bên trái */}
         <Box sx={{ cursor: "pointer", ml: 1 }} onClick={() => navigate("/")}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -19,14 +29,6 @@ const Header = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 3, mr: 2 }}>
           <Typography
             component="a"
-            href="#pricing"
-            sx={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
-          >
-            Pricing
-          </Typography>
-
-          <Typography
-            component="a"
             href="/docs"
             sx={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
           >
@@ -34,11 +36,16 @@ const Header = () => {
           </Typography>
 
           <Button
-            variant="contained"
+            variant="text"
             onClick={() => navigate("/login")}
-            sx={{ textTransform: "none", borderRadius: 2 }}
+            sx={{
+              textTransform: "none",
+              color: "inherit",
+              cursor: "pointer",
+              fontWeight: 500,
+            }}
           >
-            Get Started
+            Home
           </Button>
         </Box>
       </Toolbar>
