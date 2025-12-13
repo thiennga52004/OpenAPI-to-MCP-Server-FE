@@ -3,7 +3,7 @@ import "../Dashboard.css"
 import ErrorPage from "../ErrorPage"
 import toast, { Toaster } from 'react-hot-toast'
 
-const API_BASE_URL = process.env.REACT_APP_API_DOMAIN || "https://your-domain.com"
+const API_BASE_URL = process.env.REACT_APP_API_DOMAIN;
 
 export default function ApiSpecsTab() {
   const [specs, setSpecs] = useState([])

@@ -2,7 +2,6 @@
 import axios from "axios";
 
 const API_DOMAIN = process.env.REACT_APP_API_DOMAIN;
-
 // 1. Tạo instance axios
 const client = axios.create({
   baseURL: API_DOMAIN,

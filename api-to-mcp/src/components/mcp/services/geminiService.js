@@ -2,10 +2,9 @@
 
 // Hàm giúp tạm dừng (sleep)
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const apikey = process.env.GEMINI_API_KEY;
-
 export const callGeminiAPI = async (history, tools = [], retryCount = 0) => {
-  const apiKey = apikey; // Lấy từ biến môi trường
+  const apiKey = process.env.REACT_APP_GEMINI_API_KEY; // Lấy từ biến môi trường
+  console.log("Using Gemini API Key:", apiKey);
   const modelName = "gemini-2.5-flash";
 
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;

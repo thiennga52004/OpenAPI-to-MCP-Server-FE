@@ -16,8 +16,7 @@ import Docs from "./components/Docs";
 import Chatbot from "./components/mcp/chatbot";
 import "./App.css";
 
-// Giả sử domain API của bạn (thay thế bằng domain thật)
-const API_DOMAIN = "http://localhost:3000";
+const API_BASE_URL = process.env.REACT_APP_API_DOMAIN;
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("JWTtoken"));
@@ -59,8 +58,6 @@ function AppRoutes({ token, setToken }) {
   // --- 2. Logic dùng API Tools để kiểm tra Token ---
   useEffect(() => {
     const checkAuthWithTools = async () => {
-      // Lấy token từ localStorage (theo code mẫu bạn gửi)
-      // hoặc dùng biến 'token' từ props đều được
       const currentToken = localStorage.getItem("JWTtoken");
 
       // Nếu không có token thì thôi, không cần check
@@ -68,7 +65,7 @@ function AppRoutes({ token, setToken }) {
 
       try {
         // Gọi API tools như một cách để "Ping" kiểm tra quyền truy cập
-        await axios.get(`${API_DOMAIN}/api/tools`, {
+        await axios.get(`${API_BASE_URL}/api/tools`, {
           headers: {
             Authorization: `Bearer ${currentToken}`,
           },
