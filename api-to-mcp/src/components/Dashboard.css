@@ -537,6 +537,25 @@
 .btn-secondary:hover {
   background: #f7fafc;
   border-color: #cbd5e0;
+  
+}
+.btn-icon-delete {
+  background: white;
+  color: red;
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 44px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.btn-icon-delete:hover {
+  background: #fed7d7;
+  border-color: #fbb6b6;
+  transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -1144,5 +1163,4 @@
 .btn-secondary:hover {
   background: #218838;
 }
-
 }
